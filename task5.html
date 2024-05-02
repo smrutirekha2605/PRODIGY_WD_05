@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>Weather App</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #a1c1e0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#weather-info {
+    margin-top: 20px;
+}
+
+        </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <div class="form-group">
+            <label for="location">Enter Location:</label>
+            <input type="text" id="location" placeholder="Enter city name">
+            <button onclick="getWeather()">Get Weather</button>
+        </div>
+        <div id="weather-info"></div>
+    </div>
+
+    <script>
+        function getWeather() {
+            const location = document.getElementById("location").value;
+            const apiKey = "hy_ej";
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const weatherInfo = document.getElementById("weather-info");
+                    weatherInfo.innerHTML = `
+                        <h2>Current Weather in ${data.name}</h2>
+                        <p>Temperature: ${data.main.temp}°C</p>
+                        <p>Description: ${data.weather[0].description}</p>
+                        <p>Humidity: ${data.main.humidity}%</p>
+                        <p>Wind Speed: ${data.wind.speed} m/s</p>
+                    `;
+                })
+                .catch(error => {
+                    console.log("Error fetching weather data:", error);
+                    const weatherInfo = document.getElementById("weather-info");
+                    weatherInfo.innerHTML = "<p>Failed to fetch weather data. Please try again later.</p>";
+                });
+        }
+    </script>
+</body>
+</html>
